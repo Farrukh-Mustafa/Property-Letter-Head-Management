@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { letterheadSchema } from "@/schemas/letterheadSchema";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -11,6 +12,8 @@ import type { AxiosResponse, AxiosError } from "axios";
 import type { Response, ResponseError } from "@/types/api";
 import QRCode from "qrcode";
 import { addLetterHead } from "@/api/letterhead";
+import { createRoot } from "react-dom/client";
+import LongPrintTemplate from "./LongPrintTemplate";
 
 const LetterheadForm = () => {
   const form = useForm<z.infer<typeof letterheadSchema>>({
@@ -51,42 +54,40 @@ const LetterheadForm = () => {
         { letterHeadId: uniqueCode, payload: values },
         {
           onSuccess: () => {
-            const printWindow = window.open("", "_blank", "width=800,height=600");
-            if (!printWindow) return;
+            const newWindow = window.open("", "_blank");
+            if (!newWindow) {
+              alert("Please allow popups for this website");
+              return;
+            }
 
-            printWindow.document.write(`
-        <html>
-          <head>
-            <title>Print Content</title>
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-            <style>
-              body { margin: 20px; }
-            </style>
-          </head>
-          <body>
-            <div>Hi</div>
-            <div style="margin-top: 20px;">
-              <p><strong>Verification Code:</strong> ${uniqueCode}</p>
-              <img src="${qrCodeDataUrl}" alt="QR Code" width="150" height="150"/>
-            </div>
-          </body>
-        </html>
-      `);
+            newWindow.document.body.innerHTML = '<div id="payslip-root"></div>';
+            const link = newWindow.document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
+            newWindow.document.head.appendChild(link);
 
-            printWindow.document.close();
-            printWindow.focus();
-
-            printWindow.onload = function () {
-              printWindow.print();
-              setTimeout(() => {
-                printWindow.close();
-              }, 1000);
-            };
+            const rootElement = newWindow.document.getElementById("payslip-root");
+            if (rootElement) {
+              const root = createRoot(rootElement);
+              root.render(
+                <LongPrintTemplate
+                  ref={null}
+                  plotNumber={values.plotNumber}
+                  blockNumber={values.blockNumber}
+                  plotSize={values.plotSize}
+                  memberName={values.memberName}
+                  memberCnic={values.memberCnic}
+                  qrCodeDataUrl={qrCodeDataUrl}
+                  dealerOfficeName={values.dealerOfficeName || ""}
+                  dealerPhoneNumber={values.dealerPhoneNumber || ""}
+                  dealerCnic={values.dealerCnic || ""}
+                />
+              );
+            }
           }
         }
       );
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.error(error);
     }
   });

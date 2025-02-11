@@ -8,20 +8,40 @@ export const Route = createFileRoute("/verify/$letterheadId")({
 });
 function RouteComponent() {
   const { letterheadId } = useParams({ from: "/verify/$letterheadId" });
-  const { data } = useGetLetterHead({
+  const { data, error, isLoading } = useGetLetterHead({
     id: letterheadId
   });
-  // const data = {
-  //   plotNumber: "A-101",
-  //   blockNumber: "B-5",
-  //   plotSize: "500 sq. yards",
-  //   memberName: "John Doe",
-  //   memberCnic: "42101-1234567-8",
-  //   date: "2025-02-11",
-  //   dealerOfficeName: "ABC Property Dealers",
-  //   dealerPhoneNumber: "+92 300 1234567",
-  //   dealerCnic: "42101-9876543-2"
-  // };
+  if (isLoading) {
+    return (
+      <>
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-5">
+          <Card className="relative w-full max-w-[600px] rounded-lg border border-gray-300 bg-white p-6 shadow-lg">
+            <div className="mb-6 flex flex-col items-center border-b pb-4">
+              <h2 className="text-2xl font-bold text-gray-800">Loading...</h2>
+            </div>
+          </Card>
+        </div>
+      </>
+    );
+  }
+  if (error) {
+    return (
+      <>
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-5">
+          <Card className="relative w-full max-w-[600px] rounded-lg border border-gray-300 bg-white p-6 shadow-lg">
+            <div className="mb-6 flex flex-col items-center border-b pb-4">
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/036/652/825/large_2x/incorrect-sign-diamond-free-vector.png"
+                alt="Company Logo"
+                className="mb-4 h-20"
+              />
+              <h2 className="text-2xl font-bold text-gray-800">Unverified Letter Head</h2>
+            </div>
+          </Card>
+        </div>
+      </>
+    );
+  }
   return (
     <>
       <div className="flex min-h-screen items-center justify-center bg-gray-100 p-5">

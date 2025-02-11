@@ -57,7 +57,6 @@ const ShortLetterheadForm = () => {
             }
 
             newWindow.document.body.innerHTML = '<div id="payslip-root"></div>';
-
             const link = newWindow.document.createElement("link");
             link.rel = "stylesheet";
             link.href = "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css";
@@ -78,38 +77,6 @@ const ShortLetterheadForm = () => {
                 />
               );
             }
-
-            const printWindow = window.open("", "_blank", "width=800,height=600");
-            if (!printWindow) return;
-
-            printWindow.document.write(`
-        <html>
-          <head>
-            <title>Print Content</title>
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-            <style>
-              body { margin: 20px; }
-            </style>
-          </head>
-          <body>
-            <div>Hi</div>
-            <div style="margin-top: 20px;">
-              <p><strong>Verification Code:</strong> ${uniqueCode}</p>
-              <img src="${qrCodeDataUrl}" alt="QR Code" width="150" height="150"/>
-            </div>
-          </body>
-        </html>
-      `);
-
-            printWindow.document.close();
-            printWindow.focus();
-
-            printWindow.onload = function () {
-              printWindow.print();
-              setTimeout(() => {
-                printWindow.close();
-              }, 1000);
-            };
           }
         }
       );

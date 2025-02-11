@@ -56,6 +56,10 @@ export const getLetterHead = async (req: Request, res: Response) => {
   try {
     const letterHead = await getLetterHeadById({ id });
 
+    if (!letterHead) {
+      logger.error("Letterhead -> Get = Letterhead not found.");
+      return res.status(404).send({ success: false, error: { code: 404, message: "Letterhead not found." } });
+    }
     // Log and return the letter head.
     logger.info("Letterhead -> Get = Letter head fetched successfully.");
     return res.status(200).send({ success: true, code: 200, data: letterHead });
