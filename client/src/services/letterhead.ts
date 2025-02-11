@@ -1,5 +1,5 @@
 import { getLetterHead } from "@/api/letterhead";
-import { type LetterHead } from "@/schemas/letterheadSchema";
+import { type LetterHeadApiResponse } from "@/schemas/letterheadSchema";
 import { type UseQueryConfig } from "@/types/common";
 import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 
@@ -11,4 +11,4 @@ export const useGetLetterHead = (params: { id: string }, config: UseQueryConfig 
     refetchOnWindowFocus: false,
     refetchInterval: 1000 * 60 * 5,
     ...config
-  }) as UseQueryResult<LetterHead, Error>;
+  }) as UseQueryResult<LetterHeadApiResponse, Error>;

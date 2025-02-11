@@ -10,14 +10,29 @@ export const addLetterHead = async (req: Request, res: Response) => {
     return res.status(422).send({ success: false, error: { code: 422, message: "Invalid fields." } });
   }
 
-  const { name, cnic, plotNumber, letterHeadId } = validatedFields.data;
+  const {
+    letterHeadId,
+    plotNumber,
+    blockNumber,
+    plotSize,
+    memberName,
+    memberCnic,
+    dealerOfficeName,
+    dealerPhoneNumber,
+    dealerCnic
+  } = validatedFields.data;
 
   try {
     await addNewLetterHead({
-      name,
-      cnic,
+      letterHeadId,
       plotNumber,
-      letterHeadId
+      blockNumber,
+      plotSize,
+      memberName,
+      memberCnic,
+      dealerOfficeName,
+      dealerPhoneNumber,
+      dealerCnic
     });
 
     // Log and return success message.

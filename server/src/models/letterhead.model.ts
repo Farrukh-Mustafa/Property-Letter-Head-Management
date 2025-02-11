@@ -2,22 +2,6 @@ import { Schema, model } from "mongoose";
 
 const letterheadSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      min: 1,
-      max: 24
-    },
-    cnic: {
-      type: String,
-      required: true,
-      unique: true
-    },
-    plotNumber: {
-      type: String,
-      required: true,
-      min: 1
-    },
     letterHeadId: {
       type: String,
       required: true,
@@ -26,6 +10,42 @@ const letterheadSchema = new Schema(
     date: {
       type: Date,
       default: Date.now
+    },
+    plotNumber: {
+      type: String,
+      required: true,
+      min: 1
+    },
+    blockNumber: {
+      type: String,
+      required: true,
+      min: 1
+    },
+    plotSize: {
+      type: String,
+      required: true,
+      min: 1
+    },
+    memberName: {
+      type: String,
+      required: true,
+      min: 1
+    },
+    memberCnic: {
+      type: String,
+      required: true,
+      match: /^\d{5}-\d{7}-\d{1}$/
+    },
+    dealerOfficeName: {
+      type: String
+    },
+    dealerPhoneNumber: {
+      type: String
+    },
+    dealerCnic: {
+      type: String,
+      required: false,
+      match: /^\d{5}-\d{7}-\d{1}$/
     }
   },
   { timestamps: true }

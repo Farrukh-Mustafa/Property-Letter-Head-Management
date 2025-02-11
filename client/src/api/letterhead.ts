@@ -3,9 +3,26 @@ import { type LetterHead, type letterheadSchema } from "@/schemas/letterheadSche
 import type { Response } from "@/types/api";
 import type { z } from "zod";
 
-export const addLetterHead = async (payload: z.infer<typeof letterheadSchema>) => {
-  const { name, cnic, plotNumber, letterHeadId } = payload;
-  return await axiosWithCredentials.post<Response>("/letterhead/add", { name, cnic, plotNumber, letterHeadId });
+export const addLetterHead = async ({
+  letterHeadId,
+  payload
+}: {
+  letterHeadId: string;
+  payload: z.infer<typeof letterheadSchema>;
+}) => {
+  const { plotNumber, blockNumber, plotSize, memberName, memberCnic, dealerOfficeName, dealerPhoneNumber, dealerCnic } =
+    payload;
+  return await axiosWithCredentials.post<Response>("/letterhead/add", {
+    letterHeadId,
+    plotNumber,
+    blockNumber,
+    plotSize,
+    memberName,
+    memberCnic,
+    dealerOfficeName,
+    dealerPhoneNumber,
+    dealerCnic
+  });
 };
 
 export const getLetterHead = async ({ id }: { id: string }) => {
